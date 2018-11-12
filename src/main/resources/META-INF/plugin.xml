@@ -1,0 +1,71 @@
+<idea-plugin>
+  <id>org.kubicz.mavenexecutor.plugin.id</id>
+  <name>Maven Executor</name>
+  <version>0.8</version>
+  <vendor>Szymon Kubicz</vendor>
+
+  <description><![CDATA[
+      Tool window with Maven option.
+    ]]></description>
+
+  <change-notes><![CDATA[
+
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <depends>org.jetbrains.idea.maven</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <configurationType implementation="org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType"/>
+
+    <toolWindow id="Maven Executor" secondary="true" icon="/icons/executorLogo.png" anchor="right"
+                factoryClass="org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindowFactory" />
+
+    <projectService serviceImplementation="org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindow"/>
+    <projectService serviceImplementation="org.kubicz.mavenexecutor.view.window.ExecutionSettingsService"/>
+  </extensions>
+
+  <actions>
+    <group id="MavenExecutor.FavoriteItemContextMenu">
+      <action id="MavenExecutor.RemoveFavorite"
+              class="org.kubicz.mavenexecutor.view.window.actions.favorite.RemoveFavoriteAction"
+              text="Remove Settings" />
+    </group>
+
+    <group id="MavenExecutor.ActionsToolbar">
+      <action id="MavenExecutor.MavenReimport"
+              icon="AllIcons.Actions.Refresh"
+              class="org.kubicz.mavenexecutor.view.window.actions.toolbar.MavenReimportAction"
+              text="Reimport All Maven Projects" />
+
+      <action id="MavenExecutor.OpenMavenSettings"
+              class="org.kubicz.mavenexecutor.view.window.actions.toolbar.OpenMavenSettingsAction" text="Maven Settings"
+              description="Edit Maven integration settings for the current project"
+              icon="AllIcons.General.Settings">
+      </action>
+      <separator/>
+      <action id="MavenExecutor.JvmOptionsDialog"
+              icon="/icons/jvmOptions.png"
+              class="org.kubicz.mavenexecutor.view.window.actions.toolbar.OpenJvmOptionsDialogAction"
+              text="Configure Jvm Options" />
+
+      <action id="MavenExecutor.OpenEnvironmentVariablesDialog"
+              icon="/icons/environmentVariables.png"
+              class="org.kubicz.mavenexecutor.view.window.actions.toolbar.OpenEnvironmentVariablesDialogAction"
+              text="Configure Environment Variables" />
+
+      <separator/>
+
+      <action id="MavenExecutor.SaveSettings"
+              class="org.kubicz.mavenexecutor.view.window.actions.toolbar.SaveSettingsAction"
+              text="Save Current Settings as..."
+              description="Edit Maven integration settings for the current project"
+              icon="AllIcons.Actions.Menu_saveall">
+      </action>
+    </group>
+  </actions>
+
+</idea-plugin>
