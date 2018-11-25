@@ -88,9 +88,14 @@ class MavenProjectsTree(projectsManager: MavenProjectsManager, selectedNodes: Li
         val projectRootNodes = findProjectRootNodes(tree.model)
 
         projectRootNodes.forEach { projectRootNode ->
-            val subModules = getCheckedNodes(projectRootNode)
-            if (!subModules.isEmpty()) {
-                projectRootMap[projectRootNode.userObject as ProjectRootNode] = subModules
+            if(isAllNodesChecked(projectRootNode)) {
+                projectRootMap[projectRootNode.userObject as ProjectRootNode] = emptyList()
+            }
+            else {
+                val subModules = getCheckedNodes(projectRootNode)
+                if (!subModules.isEmpty()) {
+                    projectRootMap[projectRootNode.userObject as ProjectRootNode] = subModules
+                }
             }
         }
 
@@ -152,6 +157,28 @@ class MavenProjectsTree(projectsManager: MavenProjectsManager, selectedNodes: Li
         }.collect(root)
 
         return nodes
+    }
+
+    private fun isAllNodesChecked(root: CheckedTreeNode): Boolean {
+        val isAllChecked = object : Any() {
+            fun isAllChecked(node: CheckedTreeNode): Boolean {
+                if (node.isLeaf) {
+                    if (!node.isChecked) {
+                        return false
+                    }
+                } else {
+                    if (!node.isChecked) {
+                        return false
+                    }
+                    for (i in 0 until node.childCount) {
+                        return isAllChecked(node.getChildAt(i) as CheckedTreeNode)
+                    }
+                }
+                return true
+            }
+        }.isAllChecked(root)
+
+        return isAllChecked
     }
 
     private fun checkedAllTreeNode(node: CheckedTreeNode) {
