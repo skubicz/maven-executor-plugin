@@ -21,7 +21,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType"/>
 
-    <toolWindow id="Maven Executor" secondary="true" icon="/icons/executorLogo.png" anchor="right"
+    <toolWindow id="Maven Executor" secondary="false" icon="/icons/executorLogo.png" anchor="right"
                 factoryClass="org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindowFactory" />
 
     <projectService serviceImplementation="org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindow"/>
