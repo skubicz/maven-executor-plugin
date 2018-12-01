@@ -53,7 +53,7 @@ When only some nodes are selected, project is build with *--projects* option. In
 
 <b>Select Current button</b>
 <ul>
-<li>Select module by current open files (open, not selected and visible in editor Tab)
+<li>Select module by current open files (open, not selected and visible in editor Tab)</li>
 </ul>
     ]]></description>
 
