@@ -1,11 +1,60 @@
 <idea-plugin>
   <id>org.kubicz.mavenexecutor.plugin.id</id>
   <name>Maven Executor</name>
-  <version>0.8</version>
+  <version>1.0.1</version>
   <vendor>Szymon Kubicz</vendor>
 
   <description><![CDATA[
-      Tool window with Maven option.
+Maven Executor is a plugin for IntelliJ IDEA provides new tool window with maven run parameters.
+It is an alternative for the standard Maven Project Tool Window.
+
+<p><img src="https://raw.githubusercontent.com/skubicz/maven-executor-plugin/master/window-screen.png"/></p>
+
+<b>Installation</b>
+<ul>
+<li>find plugin using IDEA Brows Repository</li>
+<li>install and restart IDEA</li>
+<li>open Window by *View->Tool Windows->Maven Executor* (window should be visible on the right side)</li>
+</ul>
+
+<b>Functionality</b>
+
+<b>Toolbar Menu</b>
+<ul>
+<li>Reimport Maven Projects - standard reimport all maven projects action</li>
+<li>Open Maven Projects Configuration - open embedded IDEA maven configuration</li>
+<li>JVM Options - dialog window for JVM parameters - one parameter for one line ('\n' is a separator)</li>
+<li>Environment Variables - dialog window for Environment Variables</li>
+<li>Save - allows to save favorite settings</li>
+</ul>
+
+<b>Main configuration part</b>
+<ul>
+<li>Goals - maven goals to execute</li>
+<li>Run Button** - run maven with actual goals and parameters</li>
+<li>Offline - enable/disable maven --offline flag</li>
+<li>Update Snapshots - enable/disable --update-snapshots flag</li>
+<li>Threads - number of thread to run parallel, -T option (currently not supported "thread per cpu")</li>
+<li>Profiles - list of maven profiles</li>
+<li>Jvm Options - optional JVM Options, when checkbox is selected, parameters are added to main JVM parameters (from dialog window)</li>
+</ul>
+
+<b>Tree of projects</b>
+<ul>
+<li>Tree of checkbox representing structure of maven projects. Each node is maven module. If all nodes are selected, project is build normally.
+When only some nodes are selected, project is build with *--projects* option. In both case, order of building modules is calculated by Maven Reactor.</li>
+</ul>
+
+<b>Favorite part</b>
+<ul>
+<li>DEFAULT - it is label to default settings - always available</li>
+<li>Favorite - list of shortcut to saved settings, every change is immediately saved</li>
+</ul>
+
+<b>Select Current button</b>
+<ul>
+<li>Select module by current open files (open, not selected and visible in editor Tab)
+</ul>
     ]]></description>
 
   <change-notes><![CDATA[
