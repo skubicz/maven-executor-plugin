@@ -8,8 +8,4 @@ interface Mavenize {
 
     val mavenArtifact: MavenArtifact
 
-    fun equalsGroupAndArtifactId(mavenize: Mavenize?): Boolean {
-        return if (mavenize == null) false else mavenArtifact.artifactId == mavenize.mavenArtifact.artifactId && mavenArtifact.groupId == mavenize.mavenArtifact.groupId
-    }
-
 }

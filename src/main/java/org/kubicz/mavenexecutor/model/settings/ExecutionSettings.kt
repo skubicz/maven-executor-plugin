@@ -23,7 +23,7 @@ class ExecutionSettings {
     var threadCount: Int? = null
 
     @Property
-    var environmentProperties:MutableMap<String, String> = HashMap()
+    var environmentProperties: MutableMap<String, String> = HashMap()
 
     @Property
     var isUseOptionalJvmOptions = false
