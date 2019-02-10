@@ -87,6 +87,12 @@ class MavenExecutorToolWindow(private var project: Project) {
         updateProjectTree()
     }
 
+    fun updateAll() {
+        configPanel.update()
+        updateProjectTree()
+        updateFavorite()
+    }
+
     fun updateProjectTree() {
         projectsTreePanel.updateTreeSelection()
     }
