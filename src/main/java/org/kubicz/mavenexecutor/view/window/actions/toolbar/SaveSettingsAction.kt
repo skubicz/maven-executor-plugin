@@ -1,12 +1,13 @@
 package org.kubicz.mavenexecutor.view.window.actions.toolbar
 
+import com.google.gson.Gson
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.util.xmlb.XmlSerializerUtil
-import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
-import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
-import org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindow
 import myToolWindow.SaveConfirmationDialog
+import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
+import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
+import org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindow
+
 
 class SaveSettingsAction : AnAction("") {
 
@@ -20,12 +21,13 @@ class SaveSettingsAction : AnAction("") {
             settingsService.addSettings(saveConfirmationDialog.getSettingsName(), copySetting(settingsService.currentSettings))
             settingsService.loadSettings(saveConfirmationDialog.getSettingsName())
 
-            MavenExecutorToolWindow.getInstance(event.project!!).updateFavorite()
+            MavenExecutorToolWindow.getInstance(event.project!!).updateAll()
         }
     }
 
     private fun copySetting(setting: ExecutionSettings): ExecutionSettings {
-        return XmlSerializerUtil.createCopy(setting)
+        val gson = Gson()
+        return gson.fromJson(gson.toJson(setting), setting.javaClass)
     }
 
 }

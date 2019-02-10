@@ -69,6 +69,10 @@ class ExecutionSettingsService : PersistentStateComponent<ExecutionSettingsServi
 
     fun removeFavoriteSettings(settingsName: String) {
         favorite.remove(settingsName)
+
+        if (currentSettingsLabel == settingsName) {
+            loadDefaultSettings()
+        }
     }
 
     companion object {

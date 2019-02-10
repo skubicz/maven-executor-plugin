@@ -17,7 +17,7 @@ class RemoveFavoriteAction : AnAction("") {
 
         settingsService.removeFavoriteSettings(favoriteButton.text)
 
-        MavenExecutorToolWindow.getInstance(event.project!!).updateFavorite()
+        MavenExecutorToolWindow.getInstance(event.project!!).updateAll()
     }
 
 }
