@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>org.kubicz.mavenexecutor.plugin.id</id>
   <name>Maven Executor</name>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.3</version>
   <vendor>Szymon Kubicz</vendor>
 
   <description><![CDATA[
@@ -51,7 +51,14 @@ When only some nodes are selected, project is build with --projects option. In b
     ]]></description>
 
   <change-notes><![CDATA[
-
+    <br>Version 1.0.3
+    <br>* Fix opening Configure Environment Variables window error
+    <br>
+    <br>Version 1.0.2
+    <br>* Fixes of managing favorite settings (save, remove actions)
+    <br>
+    <br>Version 1.0.1
+    <br>* Add Intellij plugin description
     ]]>
   </change-notes>
 
