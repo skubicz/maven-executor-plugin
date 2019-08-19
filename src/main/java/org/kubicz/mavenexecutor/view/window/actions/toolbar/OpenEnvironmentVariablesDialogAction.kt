@@ -20,7 +20,6 @@ class OpenEnvironmentVariablesDialogAction : AnAction("") {
 
         val table = EnvVariablesTable()
         table.setValues(toEnvVariables(setting.environmentProperties))
-        table.actionsPanel.isVisible = true
         builder.centerPanel(table.component)
 
         if (builder.showAndGet()) {

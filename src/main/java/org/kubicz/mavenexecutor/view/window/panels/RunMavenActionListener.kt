@@ -8,17 +8,17 @@ import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.impl.DefaultJavaProgramRunner
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.project.Project
-import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
-import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
-import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfiguration
-import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters
 import org.jetbrains.idea.maven.execution.MavenRunnerSettings
 import org.jetbrains.idea.maven.project.MavenGeneralSettings
 import org.jetbrains.idea.maven.project.MavenProjectsManager
 import org.jetbrains.idea.maven.utils.MavenUtil
-import org.kubicz.mavenexecutor.view.window.MavenAdditionalParameters
+import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
+import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
+import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfiguration
+import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
+import org.kubicz.mavenexecutor.view.window.MavenAdditionalParameters
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
