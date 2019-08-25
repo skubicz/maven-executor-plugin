@@ -117,7 +117,7 @@ class ConfigPanel(project: Project,
         goalsComboBox.editor.item = settingsService.currentSettings.goalsAsText()
 
         goalsEditor.addDocumentListener(object : DocumentListener {
-            override fun documentChanged(event: DocumentEvent?) {
+            override fun documentChanged(event: DocumentEvent) {
                 settingsService.currentSettings.goalsFromText(goalsComboBox.editor.item.toString())
 
                 runMavenButton.isEnabled = canExecute()
@@ -252,7 +252,7 @@ class ConfigPanel(project: Project,
         val optionalJvmOptionsEditor = optionalJvmOptionsComboBox.editor.editorComponent as EditorTextField
 
         optionalJvmOptionsEditor.addDocumentListener(object : DocumentListener {
-            override fun documentChanged(event: DocumentEvent?) {
+            override fun documentChanged(event: DocumentEvent) {
                 settingsService.currentSettings.optionalJvmOptions = Lists.newArrayList(*optionalJvmOptionsComboBox.editor.item.toString().split("\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             }
         })

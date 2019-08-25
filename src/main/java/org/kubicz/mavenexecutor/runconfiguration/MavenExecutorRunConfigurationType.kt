@@ -39,7 +39,7 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
             return MavenExecutorRunConfiguration(project, this, "")
         }
 
-        override fun createConfiguration(name: String, template: RunConfiguration): RunConfiguration {
+        override fun createConfiguration(name: String?, template: RunConfiguration): RunConfiguration {
             val cfg = super.createConfiguration(name, template) as MavenExecutorRunConfiguration
             if (!StringUtil.isEmptyOrSpaces(cfg.runnerParameters.workingDirPath)) {
                 return cfg

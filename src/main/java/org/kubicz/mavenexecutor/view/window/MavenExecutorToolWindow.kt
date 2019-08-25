@@ -51,7 +51,7 @@ class MavenExecutorToolWindow(private var project: Project) {
 
         project.messageBus.connect()
                 .subscribe(ProjectTopics.PROJECT_ROOTS, object : ModuleRootListener {
-                    override fun rootsChanged(event: ModuleRootEvent?) {
+                    override fun rootsChanged(event: ModuleRootEvent) {
                         configPanel.updateProfile()
                         projectsTreePanel.update()
                     }

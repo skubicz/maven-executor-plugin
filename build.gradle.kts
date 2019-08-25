@@ -16,9 +16,9 @@ plugins {
 intellij {
     updateSinceUntilBuild = false
     instrumentCode = true
-    version = "2018.2.5"
+    version = "2019.2.1"
 
-    setPlugins("maven")
+    setPlugins("java", "maven")
 }
 
 java {
