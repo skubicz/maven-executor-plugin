@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>org.kubicz.mavenexecutor.plugin.id</id>
   <name>Maven Executor</name>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <vendor>Szymon Kubicz</vendor>
 
   <description><![CDATA[
