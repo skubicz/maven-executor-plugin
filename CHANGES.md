@@ -1,5 +1,9 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 1.0.4
+* Add compatibility with Intellij 192+
+* Add narrow mode for Favorite section
+
 ### Version 1.0.3
 * Fix opening Configure Environment Variables window error
 
