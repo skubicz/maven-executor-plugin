@@ -32,6 +32,8 @@ class SelectCurrentPanel(projectsManager: MavenProjectsManager, settingsService:
         panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
         selectCurrentButton.toolTipText = message("mavenExecutor.selectCurrent.toolTip")
         selectCurrentButton.maximumSize = Dimension(Integer.MAX_VALUE, selectCurrentButton.maximumSize.getHeight().toInt())
+        selectCurrentButton.preferredSize = Dimension(Integer.MAX_VALUE, selectCurrentButton.preferredSize.getHeight().toInt())
+
         selectCurrentButton.addActionListener {
             actionListener()
 

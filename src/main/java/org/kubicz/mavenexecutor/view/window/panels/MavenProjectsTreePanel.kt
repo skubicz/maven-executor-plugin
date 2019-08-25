@@ -8,6 +8,7 @@ import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
 import org.kubicz.mavenexecutor.model.tree.Mavenize
 import org.kubicz.mavenexecutor.model.tree.ProjectRootNode
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
+import java.awt.Dimension
 import javax.swing.JComponent
 
 class MavenProjectsTreePanel(projectsManager: MavenProjectsManager, settingsService: ExecutionSettingsService, nodeStateChangedListener: () -> Unit) {
@@ -22,6 +23,8 @@ class MavenProjectsTreePanel(projectsManager: MavenProjectsManager, settingsServ
         get() : JComponent = scrollPane
 
     init {
+        scrollPane.preferredSize = Dimension(-1, -1)
+
         projectsTree.addCheckboxTreeListener(object : CheckboxTreeAdapter() {
             override fun nodeStateChanged(node: CheckedTreeNode) {
                 val selectedProjects = projectsTree.findSelectedProjects()

@@ -15,7 +15,7 @@ class RemoveFavoriteAction : AnAction("") {
 
         val favoriteButton = event.getData(PlatformDataKeys.CONTEXT_COMPONENT) as JButton
 
-        settingsService.removeFavoriteSettings(favoriteButton.text)
+        settingsService.removeFavoriteSettings(favoriteButton.name)
 
         MavenExecutorToolWindow.getInstance(event.project!!).updateAll()
     }

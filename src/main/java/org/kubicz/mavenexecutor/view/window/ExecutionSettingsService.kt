@@ -27,6 +27,9 @@ class ExecutionSettingsService : PersistentStateComponent<ExecutionSettingsServi
     var jvmOptionHistory: History = History()
 
     @Property
+    var isFavoritePanelFullMode: Boolean = true
+
+    @Property
     private var favorite = HashMap<String, ExecutionSettings>()
 
     val favoriteSettings: List<ExecutionSettings>

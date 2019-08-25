@@ -74,7 +74,7 @@ class MavenExecutorToolWindow(private var project: Project) {
         mainContent.maximumSize = Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)
 
         mainContent.add(configPanel.component, bagConstraintsBuilder().fillHorizontal().gridx(0).gridy(0).weightx(1.0).gridwidth(2).build())
-        mainContent.add(projectsTreePanel.component, bagConstraintsBuilder().fillBoth().weightx(1.0).gridx(0).gridy(1).build())
+        mainContent.add(projectsTreePanel.component, bagConstraintsBuilder().fillBoth().weightx(1.0).weighty(0.0).gridx(0).gridy(1).build())
         mainContent.add(favoritePanel.component, bagConstraintsBuilder().fillVertical().weightx(0.0).weighty(1.0).gridx(1).gridy(1).build())
         mainContent.add(selectCurrentPanel.component, bagConstraintsBuilder().fillHorizontal().weightx(1.0).weighty(0.0).gridx(0).gridy(2).build())
 
