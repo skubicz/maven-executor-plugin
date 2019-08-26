@@ -1,5 +1,8 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 1.0.5
+* Add com.intellij.modules.java depends
+
 ### Version 1.0.4
 * Add compatibility with Intellij 192+
 * Add narrow mode for Favorite section

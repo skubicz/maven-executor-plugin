@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>org.kubicz.mavenexecutor.plugin.id</id>
   <name>Maven Executor</name>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.0.5</version>
   <vendor>Szymon Kubicz</vendor>
 
   <description><![CDATA[
@@ -51,6 +51,9 @@ When only some nodes are selected, project is build with --projects option. In b
     ]]></description>
 
   <change-notes><![CDATA[
+    <br>Version 1.0.5
+    <br>* Add com.intellij.modules.java depends
+    <br>
     <br>Version 1.0.4
     <br>* Add compatibility with Intellij 192+
     <br>* Add narrow mode for Favorite section
