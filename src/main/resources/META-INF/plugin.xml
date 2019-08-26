@@ -70,6 +70,7 @@ When only some nodes are selected, project is build with --projects option. In b
   <idea-version since-build="192"/>
 
   <depends>org.jetbrains.idea.maven</depends>
+  <depends>com.intellij.modules.java</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <configurationType implementation="org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType"/>
