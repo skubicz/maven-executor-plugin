@@ -1,5 +1,8 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 1.0.6
+* Remove deprecated usages
+
 ### Version 1.0.5
 * Add com.intellij.modules.java depends
 
