@@ -1,14 +1,13 @@
 package org.kubicz.mavenexecutor.view.window.panels
 
-import com.intellij.icons.AllIcons
 import com.intellij.ide.ui.LafManager
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.util.IconLoader
 import com.intellij.util.ui.JBUI
+import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import org.kubicz.mavenexecutor.view.components.CustomButton
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
-import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import java.awt.Dimension
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent

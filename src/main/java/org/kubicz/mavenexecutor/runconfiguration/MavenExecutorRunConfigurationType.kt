@@ -15,10 +15,10 @@ import com.intellij.execution.impl.DefaultJavaProgramRunner
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.ProgramRunner
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.LocalFileSystem
-import icons.MavenIcons
 import org.jetbrains.idea.maven.execution.MavenRunnerParameters
 import org.jetbrains.idea.maven.execution.MavenRunnerSettings
 import org.jetbrains.idea.maven.execution.RunnerBundle
@@ -76,7 +76,7 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
     }
 
     override fun getIcon(): Icon {
-        return MavenIcons.Phase
+        return IconLoader.getIcon("/icons/task.svg")
     }
 
     override fun getConfigurationFactories(): Array<ConfigurationFactory> {

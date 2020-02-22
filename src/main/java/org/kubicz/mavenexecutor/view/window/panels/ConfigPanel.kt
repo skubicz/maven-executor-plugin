@@ -1,7 +1,6 @@
 package org.kubicz.mavenexecutor.view.window.panels
 
 import com.google.common.collect.Lists
-import com.intellij.icons.AllIcons
 import com.intellij.ide.ui.LafManager
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
@@ -9,6 +8,7 @@ import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.EditorComboBoxRenderer
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.ScrollPaneFactory
@@ -17,10 +17,10 @@ import com.intellij.ui.components.fields.IntegerField
 import org.jetbrains.idea.maven.execution.MavenArgumentsCompletionProvider
 import org.jetbrains.idea.maven.project.MavenProjectsManager
 import org.kubicz.mavenexecutor.model.settings.History
+import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import org.kubicz.mavenexecutor.view.components.CustomCheckBoxList
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
 import org.kubicz.mavenexecutor.view.window.GridBagConstraintsBuilder
-import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import java.awt.Dimension
 import java.awt.GridBagLayout
 import java.awt.event.FocusAdapter
@@ -102,7 +102,7 @@ class ConfigPanel(project: Project,
     }
 
     private fun createGoalsSubPanel() {
-        runMavenButton.icon = AllIcons.General.Run
+        runMavenButton.icon = IconLoader.getIcon("/icons/run.png")
         runMavenButton.addActionListener(RunMavenActionListener(project))
         runMavenButton.isEnabled = canExecute()
 
