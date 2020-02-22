@@ -31,7 +31,7 @@ class RunMavenActionListener(private val project: Project) : ActionListener {
 
         settings.projectsToBuild.forEach { projectToBuild ->
             val runnerAndConfigurationSettings = RunManagerEx.getInstanceEx(project)
-                    .createRunConfiguration(projectToBuild.displayName, runConfigurationType.configurationFactories[0])
+                    .createConfiguration(projectToBuild.displayName, runConfigurationType.configurationFactories[0])
 
             runnerAndConfigurationSettings.isActivateToolWindowBeforeRun = true
 
