@@ -1,10 +1,13 @@
 package org.kubicz.mavenexecutor.view.window.panels
 
-import com.intellij.ide.ui.LafManager
+import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.IconLoader
 import com.intellij.util.ui.JBUI
+import org.kubicz.mavenexecutor.model.settings.VisibleSetting
 import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import org.kubicz.mavenexecutor.view.components.CustomButton
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
@@ -13,17 +16,15 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.*
 
-class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingListener: () -> Unit) {
+class FavoritePanel(project: Project, private val settingsService: ExecutionSettingsService, changeSettingListener: () -> Unit) {
 
     private var panel = JPanel()
-
-    private val settingsService = settingsService;
 
     private var changeModeButton = CustomButton("")
 
     private var defaultSettingsButton = CustomButton(message(fullOrSmall("mavenExecutor.default.label", "mavenExecutor.default.small.label")))
 
-    private val isDefault: JButton.() -> Boolean = {name == "default"}
+    private val isDefault: JButton.() -> Boolean = { name == "default" }
 
 
     private val init: CustomButton.(Boolean) -> Unit = {selected ->
@@ -52,20 +53,33 @@ class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingList
         get() : JComponent = panel
 
     init {
-        LafManager.getInstance().addLafManagerListener {
-            refresh()
-        }
+        ApplicationManager.getApplication().messageBus.connect()
+            .subscribe(LafManagerListener.TOPIC, LafManagerListener { refresh() })
 
-        initComponents()
+        if (settingsService.getVisibleSettings().contains(VisibleSetting.FAVORITE)) {
+            initComponents()
+        }
+        else {
+            panel.preferredSize = Dimension(1, panel.preferredSize.getHeight().toInt())
+            panel.maximumSize = Dimension(1, panel.maximumSize.getHeight().toInt())
+        }
     }
 
     fun refresh() {
         panel.removeAll()
-        defaultSettingsButton = CustomButton(message(fullOrSmall("mavenExecutor.default.label", "mavenExecutor.default.small.label")))
-        changeModeButton = CustomButton("")
+        if (settingsService.getVisibleSettings().contains(VisibleSetting.FAVORITE)) {
+            defaultSettingsButton =
+                CustomButton(message(fullOrSmall("mavenExecutor.default.label", "mavenExecutor.default.small.label")))
+            changeModeButton = CustomButton("")
 
-        initComponents()
+            initComponents()
 
+        }
+        else {
+            panel.preferredSize = Dimension(1, panel.preferredSize.getHeight().toInt())
+            panel.maximumSize = Dimension(1, panel.maximumSize.getHeight().toInt())
+            panel.border = JBUI.Borders.customLine(UIManager.getColor("Component.borderColor"), 0, 0, 0, 0)
+        }
         panel.updateUI()
         panel.repaint()
     }
@@ -76,16 +90,18 @@ class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingList
 
     private fun initComponents() {
         panel.layout = BoxLayout(panel, BoxLayout.PAGE_AXIS)
+        panel.border = JBUI.Borders.customLine(UIManager.getColor("Component.borderColor"), 0, 1, 0, 0)
+
         if(settingsService.isFavoritePanelFullMode) {
-            panel.preferredSize = Dimension(-1, panel.preferredSize.getHeight().toInt())
-            panel.maximumSize = Dimension(-1, panel.maximumSize.getHeight().toInt())
+            panel.preferredSize = Dimension(100, panel.preferredSize.getHeight().toInt())
+            panel.maximumSize = Dimension(100, panel.maximumSize.getHeight().toInt())
         }
         else  {
             panel.preferredSize = Dimension(30, panel.preferredSize.getHeight().toInt())
             panel.maximumSize = Dimension(30, panel.maximumSize.getHeight().toInt())
         }
 
-        changeModeButton.icon = IconLoader.getIcon(fullOrSmall("/icons/allRight.png", "/icons/allLeft.png"))
+        changeModeButton.icon = IconLoader.getIcon(fullOrSmall("/icons/allRight.png", "/icons/allLeft.png"), this.javaClass)
         changeModeButton.maximumSize = Dimension(30, changeModeButton.maximumSize.getHeight().toInt())
 
         changeModeButton.addActionListener {
@@ -106,7 +122,7 @@ class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingList
 
         val isDefaultSettingsSelected = settingsService.isDefaultSettings
 
-        defaultSettingsButton.name = fullOrSmall("default", "d")
+        defaultSettingsButton.name = "default"
         defaultSettingsButton.init(isDefaultSettingsSelected)
 
         panel.add(defaultSettingsButton)

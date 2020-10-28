@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import myToolWindow.SaveConfirmationDialog
 import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
+import org.kubicz.mavenexecutor.model.settings.VisibleSetting
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
 import org.kubicz.mavenexecutor.view.window.MavenExecutorToolWindow
 
@@ -28,6 +29,15 @@ class SaveSettingsAction : AnAction("") {
     private fun copySetting(setting: ExecutionSettings): ExecutionSettings {
         val gson = Gson()
         return gson.fromJson(gson.toJson(setting), setting.javaClass)
+    }
+
+
+    override fun update(event: AnActionEvent) {
+        val project = event.project!!
+        val presentation = event.presentation
+        val settings = ExecutionSettingsService.getInstance(project)
+
+        presentation.isEnabled = settings.getVisibleSettings().contains(VisibleSetting.FAVORITE)
     }
 
 }

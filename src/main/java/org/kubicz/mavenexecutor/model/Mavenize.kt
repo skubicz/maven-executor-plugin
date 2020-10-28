@@ -1,4 +1,4 @@
-package org.kubicz.mavenexecutor.model.tree
+package org.kubicz.mavenexecutor.model
 
 import org.kubicz.mavenexecutor.model.MavenArtifact
 

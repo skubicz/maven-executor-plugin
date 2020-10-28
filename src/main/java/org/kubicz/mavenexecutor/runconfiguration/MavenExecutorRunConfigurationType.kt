@@ -13,7 +13,6 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.impl.DefaultJavaProgramRunner
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.execution.runners.ProgramRunner
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.util.Key
@@ -65,6 +64,10 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
             }
 
         }
+
+        override fun getId(): String {
+            return "MavenExecutor"
+        }
     }
 
     override fun getDisplayName(): String {
@@ -76,7 +79,7 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
     }
 
     override fun getIcon(): Icon {
-        return IconLoader.getIcon("/icons/task.svg")
+        return IconLoader.getIcon("/icons/task.svg", this.javaClass)
     }
 
     override fun getConfigurationFactories(): Array<ConfigurationFactory> {
@@ -140,18 +143,18 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
             return null
         }
 
-        fun runConfiguration(project: Project, params: MavenRunnerParameters, callback: ProgramRunner.Callback?) {
-            runConfiguration(project, params, null as MavenGeneralSettings?, null as MavenRunnerSettings?, callback)
+        fun runConfiguration(project: Project, params: MavenRunnerParameters) {
+            runConfiguration(project, params, null as MavenGeneralSettings?, null as MavenRunnerSettings?)
         }
 
         fun runConfiguration(project: Project, params: MavenRunnerParameters, settings: MavenGeneralSettings?,
-                             runnerSettings: MavenRunnerSettings?, callback: ProgramRunner.Callback?) {
+                             runnerSettings: MavenRunnerSettings?) {
             val configSettings = createRunnerAndConfigurationSettings(settings, runnerSettings, params, project)
             val runner = DefaultJavaProgramRunner.getInstance()
             val executor = DefaultRunExecutor.getRunExecutorInstance()
 
             try {
-                runner.execute(ExecutionEnvironment(executor, runner, configSettings, project), callback)
+                runner.execute(ExecutionEnvironment(executor, runner, configSettings, project))
             } catch (var9: ExecutionException) {
                 MavenUtil.showError(project, "Failed to execute Maven goal", var9)
             }
@@ -161,8 +164,8 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
         fun createRunnerAndConfigurationSettings(generalSettings: MavenGeneralSettings?,
                                                  runnerSettings: MavenRunnerSettings?, params: MavenRunnerParameters, project: Project): RunnerAndConfigurationSettings {
             val settings = RunManager.getInstance(project)
-                    .createRunConfiguration(generateName(project, params), ConfigurationTypeUtil
-                            .findConfigurationType(MavenExecutorRunConfigurationType::class.java).myFactory)
+                .createConfiguration(generateName(project, params), ConfigurationTypeUtil
+                    .findConfigurationType(MavenExecutorRunConfigurationType::class.java).myFactory)
             val runConfiguration = settings.configuration as MavenExecutorRunConfiguration
             runConfiguration.runnerParameters = params
             runConfiguration.generalSettings = generalSettings

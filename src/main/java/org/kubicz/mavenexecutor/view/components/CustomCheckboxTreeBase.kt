@@ -15,11 +15,14 @@ import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeCellRenderer
 
 @Suppress("UNUSED_PARAMETER")
-open class CustomCheckboxTreeBase @JvmOverloads constructor(cellRenderer: CheckboxTreeCellRendererBase = CheckboxTreeCellRendererBase(), root: CheckedTreeNode? = null, checkPolicy: CheckPolicy = CustomCheckboxTreeHelper.DEFAULT_POLICY) : Tree() {
+open class CustomCheckboxTreeBase @JvmOverloads constructor(cellRenderer: CheckboxTreeCellRendererBase = CheckboxTreeCellRendererBase(),
+                                                            root: CheckedTreeNode? = null,
+                                                            checkPolicy: CheckPolicy = CustomCheckboxTreeHelper.DEFAULT_POLICY) : Tree() {
 
     private val helper: CustomCheckboxTreeHelper
 
     private val myEventDispatcher = EventDispatcher.create(CheckboxTreeListener::class.java)
+    private var expandListener: CheckboxTreeExpandListener? = null
 
     init {
         helper = CustomCheckboxTreeHelper(checkPolicy, myEventDispatcher)
@@ -45,6 +48,10 @@ open class CustomCheckboxTreeBase @JvmOverloads constructor(cellRenderer: Checkb
 
     fun addCheckboxTreeListener(listener: CheckboxTreeListener) {
         myEventDispatcher.addListener(listener)
+    }
+
+    fun setCheckboxTreeExpandListener(listener: CheckboxTreeExpandListener) {
+        helper.expandListener = listener
     }
 
     fun setNodeState(node: CheckedTreeNode, checked: Boolean) {
@@ -101,10 +108,10 @@ open class CustomCheckboxTreeBase @JvmOverloads constructor(cellRenderer: Checkb
             }
             textRenderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus)
 
-            if (UIUtil.isUnderGTKLookAndFeel()) {
-                val background = if (selected) UIUtil.getTreeSelectionBackground() else UIUtil.getTreeTextBackground()
-                UIUtil.changeBackGround(this, background)
-            }
+//            if (UIUtil.isUnderGTKLookAndFeel()) {
+//                val background = if (selected) UIUtil.getTreeSelectionBackground() else UIUtil.getTreeTextBackground()
+//                UIUtil.changeBackGround(this, background)
+//            }
             customizeRenderer(tree, value, selected, expanded, leaf, row, hasFocus)
             revalidate()
 

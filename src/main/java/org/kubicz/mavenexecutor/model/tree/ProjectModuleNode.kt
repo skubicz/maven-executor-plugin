@@ -1,6 +1,7 @@
 package org.kubicz.mavenexecutor.model.tree
 
 import org.kubicz.mavenexecutor.model.MavenArtifact
+import org.kubicz.mavenexecutor.model.Mavenize
 
 class ProjectModuleNode(override val displayName: String, override val mavenArtifact: MavenArtifact) : Mavenize {
 

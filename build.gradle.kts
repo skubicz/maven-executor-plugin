@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "org.kubicz.mavenexecutor"
-version = "1.0.7-SNAPSHOT"
+version = "2.0.0-SNAPSHOT"
 
 buildscript {
     repositories { mavenCentral() }
@@ -9,16 +9,22 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.3.12"
-    kotlin("jvm") version "1.2.30"
+    id("org.jetbrains.intellij") version "0.6.5"
+    kotlin("jvm") version "1.4.21"
 }
 
 intellij {
     updateSinceUntilBuild = false
     instrumentCode = true
-    version = "2019.2.1"
+    version = "2020.3.1"
 
     setPlugins("java", "maven")
+}
+
+
+repositories {
+    mavenCentral()
+    maven("https://dl.bintray.com/kotlin/kotlin-eap")
 }
 
 java {
@@ -29,7 +35,18 @@ java {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "1.8"
-        languageVersion = "1.2"
-        apiVersion = "1.2"
+        languageVersion = "1.4"
+        apiVersion = "1.4"
     }
+}
+dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }

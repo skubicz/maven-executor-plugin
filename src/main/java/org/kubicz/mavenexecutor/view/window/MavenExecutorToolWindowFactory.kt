@@ -16,4 +16,6 @@ class MavenExecutorToolWindowFactory : ToolWindowFactory, DumbAware {
         MavenExecutorToolWindow.getInstance(project).createToolWindowContent(toolWindow)
     }
 
+    override fun init(window: ToolWindow) {
+    }
 }

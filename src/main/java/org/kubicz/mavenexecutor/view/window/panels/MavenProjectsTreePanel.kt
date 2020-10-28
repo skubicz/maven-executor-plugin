@@ -1,23 +1,29 @@
 package org.kubicz.mavenexecutor.view.window.panels
 
-import com.intellij.ui.CheckboxTreeAdapter
+import com.intellij.openapi.ui.popup.JBPopupFactory
+import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.ScrollPaneFactory
-import org.jetbrains.idea.maven.project.MavenProjectsManager
+import com.intellij.ui.awt.RelativePoint
+import com.intellij.util.ui.JBUI
+import org.kubicz.mavenexecutor.model.Mavenize
 import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
-import org.kubicz.mavenexecutor.model.tree.Mavenize
 import org.kubicz.mavenexecutor.model.tree.ProjectRootNode
+import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
+import org.kubicz.mavenexecutor.view.MavenProjectsHelper
+import org.kubicz.mavenexecutor.view.components.CheckboxTreeExpandListener
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
 import java.awt.Dimension
-import javax.swing.JComponent
+import java.awt.GridLayout
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
+import javax.swing.*
 
-class MavenProjectsTreePanel(projectsManager: MavenProjectsManager, settingsService: ExecutionSettingsService, nodeStateChangedListener: () -> Unit) {
+class MavenProjectsTreePanel(projectsHelper: MavenProjectsHelper, private val settingsService: ExecutionSettingsService) {
 
-    private val projectsTree = MavenProjectsTree(projectsManager, settingsService.currentSettings.projectsToBuild)
+    private val projectsTree = MavenProjectsTree(projectsHelper, settingsService.currentSettings.projectsToBuild, settingsService.currentSettings.collapseModules)
 
     private val scrollPane = ScrollPaneFactory.createScrollPane(projectsTree.treeComponent)
-
-    private val settingsService = settingsService
 
     val component
         get() : JComponent = scrollPane
@@ -25,26 +31,110 @@ class MavenProjectsTreePanel(projectsManager: MavenProjectsManager, settingsServ
     init {
         scrollPane.preferredSize = Dimension(-1, -1)
 
-        projectsTree.addCheckboxTreeListener(object : CheckboxTreeAdapter() {
+        projectsTree.addCheckboxTreeListener(object : CheckboxTreeListener {
             override fun nodeStateChanged(node: CheckedTreeNode) {
-                val selectedProjects = projectsTree.findSelectedProjects()
+                updateProjectsToBuild()
+            }
+        })
 
-                val projectsToBuild = selectedProjects.entries.map { toProjectToBuild(it) }.toMutableList()
+        projectsTree.addMouseListener(object : MouseAdapter() {
+            override fun mousePressed(e: MouseEvent?) {
+                val row = projectsTree.treeComponent.getRowForLocation(e?.point!!.x, e.point.y)
 
-                settingsService.currentSettings.projectsToBuild = projectsToBuild
+                if (row >= 0 && SwingUtilities.isRightMouseButton(e)) {
+                    showMenu(row, RelativePoint(e))
+                }
+            }
+        })
 
-                nodeStateChangedListener()
+        projectsTree.setCheckboxTreeExpandListener(object : CheckboxTreeExpandListener {
+            override fun possibleStageChange(node: CheckedTreeNode, isExpand: Boolean) {
+                updateCollapseModules()
             }
         })
 
     }
 
+    private fun showMenu(row: Int, point: RelativePoint) {
+        val panel = JPanel(GridLayout(2,1))
+        panel.background = null
+        panel.border = null
+
+
+        val popup = JBPopupFactory.getInstance()
+                .createComponentPopupBuilder(panel, null)
+                .setMayBeParent(true)
+                .setFocusable(true)
+                .setResizable(false)
+                .setRequestFocus(true)
+                .setLocateByContent(true)
+                .setShowBorder(false)
+                .setShowShadow(false)
+                .setCancelOnWindowDeactivation(false)
+                .setCancelCallback {
+                    true
+                }.createPopup()
+
+
+        val selectOthersButton = JButton(message("mavenExecutor.projectsTree.selectOthers"))
+        selectOthersButton.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent?) {
+                projectsTree.changeAll(true)
+                val checkedTreeNode = (projectsTree.treeComponent.getPathForRow(row).lastPathComponent as? CheckedTreeNode)!!
+                projectsTree.treeComponent.setNodeState(checkedTreeNode, false)
+                popup.cancel()
+            }
+        })
+
+        val deselectOthersButton = JButton(message("mavenExecutor.projectsTree.deselectOthers"))
+        deselectOthersButton.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent?) {
+                projectsTree.changeAll(false)
+
+                val checkedTreeNode = (projectsTree.treeComponent.getPathForRow(row).lastPathComponent as? CheckedTreeNode)!!
+                projectsTree.treeComponent.setNodeState(checkedTreeNode, true)
+
+                popup.cancel()
+            }
+        })
+
+        panel.add(selectOthersButton)
+        panel.add(deselectOthersButton)
+
+        popup.show(point)
+    }
+
     fun update() {
-        projectsTree.update(settingsService.currentSettings.projectsToBuild)
+        projectsTree.update(settingsService.currentSettings.projectsToBuild, settingsService.currentSettings.collapseModules)
+
+        updateProjectsToBuild()
     }
 
     fun updateTreeSelection() {
         projectsTree.updateTreeSelection(settingsService.currentSettings.projectsToBuild)
+    }
+
+    fun collapseAll() {
+        projectsTree.collapseAll()
+        updateCollapseModules()
+    }
+
+    fun expandAll() {
+        projectsTree.expandAll()
+        updateCollapseModules()
+    }
+
+    private fun updateCollapseModules() {
+        settingsService.currentSettings.collapseModules.clear()
+        settingsService.currentSettings.collapseModules.addAll(projectsTree.getCollapses())
+    }
+
+    private fun updateProjectsToBuild() {
+        val selectedProjects = projectsTree.findSelectedProjects(settingsService.currentSettings.alwaysBuildPomModules)
+
+        val projectsToBuild = selectedProjects.entries.map { toProjectToBuild(it) }.toMutableList()
+
+        settingsService.currentSettings.projectsToBuild = projectsToBuild
     }
 
     private fun toProjectToBuild(selectedProjectEntry: Map.Entry<ProjectRootNode, List<Mavenize>>): ProjectToBuild {

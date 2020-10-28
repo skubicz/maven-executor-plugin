@@ -1,5 +1,7 @@
 package org.kubicz.mavenexecutor.view.components
 
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.util.Key
 import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
@@ -9,15 +11,20 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.EventDispatcher
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
+import java.awt.Point
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import javax.swing.JComponent
+import javax.swing.SwingUtilities
 import javax.swing.tree.TreeNode
 import javax.swing.tree.TreePath
 
-class CustomCheckboxTreeHelper(private val checkPolicy: CustomCheckboxTreeBase.CheckPolicy, private val myEventDispatcher: EventDispatcher<CheckboxTreeListener>) {
+class CustomCheckboxTreeHelper(private val checkPolicy: CustomCheckboxTreeBase.CheckPolicy,
+                               private val myEventDispatcher: EventDispatcher<CheckboxTreeListener>) {
+
+    var expandListener: CheckboxTreeExpandListener? = null
 
     fun initTree(tree: Tree, mainComponent: JComponent, cellRenderer: CustomCheckboxTreeBase.CheckboxTreeCellRendererBase) {
         removeTreeListeners(mainComponent)
@@ -162,11 +169,33 @@ class CustomCheckboxTreeHelper(private val checkPolicy: CustomCheckboxTreeBase.C
         return listener
     }
 
+
+    private fun showMenu(checkBox: CustomCheckboxTree, point: Point) {
+        val actionManager = ActionManager.getInstance()
+
+        val menu = actionManager.createActionPopupMenu("MavenExecutorPanel", actionManager.getAction("MavenExecutor.FavoriteItemContextMenu") as DefaultActionGroup)
+        menu.component.show(checkBox, point.x, point.y)
+    }
+
     private fun setupMouseListener(tree: Tree, mainComponent: JComponent, cellRenderer: CustomCheckboxTreeBase.CheckboxTreeCellRendererBase): ClickListener {
         val listener = object : ClickListener() {
             override fun onClick(e: MouseEvent, clickCount: Int): Boolean {
                 val row = tree.getRowForLocation(e.x, e.y)
-                if (row < 0) return false
+
+                if (row < 0) {
+                    expandListener?.let {
+                        val closesRow = tree.getClosestRowForLocation(e.x, e.y)
+
+                        if(closesRow >= 0) {
+                            val closesObject = tree.getPathForRow(closesRow).lastPathComponent as? CheckedTreeNode
+                                    ?: return false
+                            it.possibleStageChange(closesObject, tree.isExpanded(closesRow))
+                        }
+                    }
+
+                    return false
+                }
+
                 val o = tree.getPathForRow(row).lastPathComponent as? CheckedTreeNode ?: return false
                 val rowBounds = tree.getRowBounds(row)
                 cellRenderer.bounds = rowBounds

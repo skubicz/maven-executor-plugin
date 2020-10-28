@@ -15,8 +15,12 @@ class MavenExecutorRunConfiguration(project: Project, factory: ConfigurationFact
     override fun createJavaParameters(project: Project?): JavaParameters {
         val javaParameters = super.createJavaParameters(project)
 
-        if (!additionalParameters.projects.isEmpty()) {
+        if (additionalParameters.projects.isNotEmpty()) {
             javaParameters.programParametersList.add("-pl", additionalParameters.projects)
+        }
+
+        if (additionalParameters.additionalParameters.isNotEmpty()) {
+            javaParameters.programParametersList.addParametersString(additionalParameters.additionalParameters)
         }
 
         return javaParameters

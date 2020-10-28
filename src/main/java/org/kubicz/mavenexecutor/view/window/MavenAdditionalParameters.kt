@@ -4,4 +4,6 @@ class MavenAdditionalParameters {
 
     var projects = ""
 
+    var additionalParameters = ""
+
 }

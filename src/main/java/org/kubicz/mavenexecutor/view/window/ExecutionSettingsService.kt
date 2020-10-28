@@ -7,8 +7,14 @@ import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.Property
-import org.kubicz.mavenexecutor.model.settings.History
+import org.jetbrains.idea.maven.project.MavenProject
+import org.jetbrains.idea.maven.project.MavenProjectsManager
+import org.kubicz.mavenexecutor.model.MavenArtifact
 import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
+import org.kubicz.mavenexecutor.model.settings.History
+import org.kubicz.mavenexecutor.model.settings.VisibleSetting
+import org.kubicz.mavenexecutor.model.tree.ProjectRootNode
+import org.kubicz.mavenexecutor.view.MavenProjectsHelper
 import java.util.*
 
 @State(name = "mavenExecutorSetting", storages = [Storage("mavenExecutorSetting.xml")])
@@ -32,6 +38,42 @@ class ExecutionSettingsService : PersistentStateComponent<ExecutionSettingsServi
     @Property
     private var favorite = HashMap<String, ExecutionSettings>()
 
+    @Property
+    private var visibleSettings: MutableSet<VisibleSetting> = HashSet()
+
+    @Property
+    var visibleSettingsNotInitYet = true
+
+    @Property
+    var resultCommandLineMode: MavenResultCommandLineMode = MavenResultCommandLineMode.SIMPLE
+
+    @Property
+    var resultCommandLineChosenProject: MavenArtifact = MavenProjectsHelper.EMPTY_ARTIFACT
+
+    fun clearVisibleSettings() {
+        visibleSettings.clear()
+    }
+
+    fun addVisibleSettings(settings: List<VisibleSetting>) {
+        visibleSettings.clear()
+        visibleSettings.addAll(settings)
+    }
+
+    fun getVisibleSettings(): Set<VisibleSetting> {
+        if (visibleSettingsNotInitYet) {
+            visibleSettings.add(VisibleSetting.OFFLINE_MODE)
+            visibleSettings.add(VisibleSetting.THREAD_COUNT)
+            visibleSettings.add(VisibleSetting.OPTIONAL_JVM_OPTIONS)
+            visibleSettings.add(VisibleSetting.PROFILES)
+            visibleSettings.add(VisibleSetting.SKIP_TESTS)
+            visibleSettings.add(VisibleSetting.ALWAYS_UPDATE_SNAPSHOT)
+            visibleSettings.add(VisibleSetting.FAVORITE)
+
+            visibleSettingsNotInitYet = false
+        }
+        return visibleSettings
+    }
+
     val favoriteSettings: List<ExecutionSettings>
         get() = favorite.values.toList()
 
@@ -48,6 +90,22 @@ class ExecutionSettingsService : PersistentStateComponent<ExecutionSettingsServi
 
 
     init {
+    }
+
+    fun currentRootProjects(manager: MavenProjectsManager): List<MavenProject> {
+        val rootProjects = manager.rootProjects
+        if (currentSettings.selectedProject == MavenProjectsHelper.EMPTY_ARTIFACT) {
+            return rootProjects
+        }
+
+        return rootProjects.filter {
+            currentSettings
+                    .selectedProject.equalsGroupAndArtifactId(MavenArtifact(it.mavenId.groupId!!, it.mavenId.artifactId!!, ""))
+        }
+    }
+
+    fun currentRootProjectsAsMavenize(manager: MavenProjectsManager): List<ProjectRootNode> {
+        return currentRootProjects(manager).map { ProjectRootNode(it.displayName, MavenArtifact(it.mavenId.groupId!!, it.mavenId.artifactId!!, it.mavenId.version!!), it.directoryFile) }
     }
 
     override fun getState(): ExecutionSettingsService? {

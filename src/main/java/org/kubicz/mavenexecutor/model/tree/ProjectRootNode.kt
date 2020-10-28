@@ -2,8 +2,9 @@ package org.kubicz.mavenexecutor.model.tree
 
 import com.intellij.openapi.vfs.VirtualFile
 import org.kubicz.mavenexecutor.model.MavenArtifact
+import org.kubicz.mavenexecutor.model.Mavenize
 
-class ProjectRootNode private constructor(override val displayName: String,
+class ProjectRootNode constructor(override val displayName: String,
                                           override val mavenArtifact: MavenArtifact,
                                           val projectDirectory: VirtualFile) : Mavenize {
 

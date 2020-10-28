@@ -2,7 +2,10 @@ package org.kubicz.mavenexecutor.model.settings
 
 import com.google.common.collect.Lists
 import com.intellij.util.xmlb.annotations.Property
-import java.io.Serializable
+import org.kubicz.mavenexecutor.model.MavenArtifact
+import org.kubicz.mavenexecutor.model.MavenGroupAndArtifactKey
+import org.kubicz.mavenexecutor.view.MavenProjectsHelper
+import java.util.HashSet
 
 
 class ExecutionSettings {
@@ -38,7 +41,19 @@ class ExecutionSettings {
     var isSkipTests = false
 
     @Property
+    var additionalParameters: String = ""
+
+    @Property
     var projectsToBuild: MutableList<ProjectToBuild> = ArrayList()
+
+    @Property
+    var selectedProject = MavenProjectsHelper.EMPTY_ARTIFACT
+
+    @Property
+    var collapseModules: MutableSet<MavenGroupAndArtifactKey> = HashSet()
+
+    @Property
+    var alwaysBuildPomModules = true
 
     fun goalsAsText(): String {
         return goals.joinToString(" ")
@@ -46,6 +61,14 @@ class ExecutionSettings {
 
     fun optionalJvmOptionsAsText(): String {
         return optionalJvmOptions.joinToString(" ")
+    }
+
+    fun allJvmOptionsAsText(): String {
+        var jvmOptions = jvmOptionsAsText()
+        if (isUseOptionalJvmOptions && optionalJvmOptions.isNotEmpty()) {
+            jvmOptions = jvmOptions + " " + optionalJvmOptionsAsText()
+        }
+        return jvmOptions
     }
 
     fun jvmOptionsAsText(): String {
@@ -56,7 +79,7 @@ class ExecutionSettings {
         if (goalsText.isEmpty()) {
             goals.clear()
         } else {
-            goals = Lists.newArrayList(*goalsText.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+            goals = Lists.newArrayList(*goalsText.trim().split("\\s".toRegex()).filter { it.isNotEmpty() }.toTypedArray())
         }
     }
 

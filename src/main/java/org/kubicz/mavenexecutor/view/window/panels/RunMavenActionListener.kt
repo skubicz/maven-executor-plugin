@@ -18,6 +18,7 @@ import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
 import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfiguration
 import org.kubicz.mavenexecutor.runconfiguration.MavenExecutorRunConfigurationType
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
+import org.kubicz.mavenexecutor.view.window.LastModifiedFilesService
 import org.kubicz.mavenexecutor.view.window.MavenAdditionalParameters
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -28,6 +29,8 @@ class RunMavenActionListener(private val project: Project) : ActionListener {
         val settings = ExecutionSettingsService.getInstance(project).currentSettings
 
         val runConfigurationType = ConfigurationTypeUtil.findConfigurationType(MavenExecutorRunConfigurationType::class.java)
+
+        LastModifiedFilesService.getInstance(project).clearFiles()
 
         settings.projectsToBuild.forEach { projectToBuild ->
             val runnerAndConfigurationSettings = RunManagerEx.getInstanceEx(project)
@@ -41,6 +44,7 @@ class RunMavenActionListener(private val project: Project) : ActionListener {
             runConfiguration.generalSettings = mavenGeneralSettings(settings)
             runConfiguration.runnerParameters = mavenRunnerParameters(settings, projectToBuild)
             runConfiguration.additionalParameters = mavenAdditionalParameters(projectToBuild)
+
 
             run(runnerAndConfigurationSettings)
         }
