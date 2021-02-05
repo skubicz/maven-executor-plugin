@@ -1,25 +1,31 @@
 package org.kubicz.mavenexecutor.view.window.panels
 
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.awt.RelativePoint
-import com.intellij.util.ui.JBUI
+import com.intellij.util.xmlb.XmlSerializerUtil
 import org.kubicz.mavenexecutor.model.Mavenize
+import org.kubicz.mavenexecutor.model.settings.ExecutionSettings
 import org.kubicz.mavenexecutor.model.settings.ProjectToBuild
 import org.kubicz.mavenexecutor.model.tree.ProjectRootNode
 import org.kubicz.mavenexecutor.view.MavenExecutorBundle.Companion.message
 import org.kubicz.mavenexecutor.view.MavenProjectsHelper
 import org.kubicz.mavenexecutor.view.components.CheckboxTreeExpandListener
 import org.kubicz.mavenexecutor.view.window.ExecutionSettingsService
+import org.kubicz.mavenexecutor.view.window.actions.toolbar.MavenRunner
 import java.awt.Dimension
 import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import javax.swing.*
+import javax.swing.JButton
+import javax.swing.JComponent
+import javax.swing.JPanel
+import javax.swing.SwingUtilities
 
-class MavenProjectsTreePanel(projectsHelper: MavenProjectsHelper, private val settingsService: ExecutionSettingsService) {
+class MavenProjectsTreePanel(private val project: Project, projectsHelper: MavenProjectsHelper, private val settingsService: ExecutionSettingsService) {
 
     private val projectsTree = MavenProjectsTree(projectsHelper, settingsService.currentSettings.projectsToBuild, settingsService.currentSettings.collapseModules)
 
@@ -56,7 +62,7 @@ class MavenProjectsTreePanel(projectsHelper: MavenProjectsHelper, private val se
     }
 
     private fun showMenu(row: Int, point: RelativePoint) {
-        val panel = JPanel(GridLayout(2,1))
+        val panel = JPanel(GridLayout(3,1))
         panel.background = null
         panel.border = null
 
@@ -74,7 +80,34 @@ class MavenProjectsTreePanel(projectsHelper: MavenProjectsHelper, private val se
                 .setCancelCallback {
                     true
                 }.createPopup()
+        
+        val buildThisButton = JButton(message("mavenExecutor.projectsTree.buildThis.button"))
+        buildThisButton.toolTipText =message("mavenExecutor.projectsTree.buildThis.toolTip")
+        buildThisButton.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent?) {
+                val checkedTreeNode = (projectsTree.treeComponent.getPathForRow(row).lastPathComponent as? CheckedTreeNode)!!
 
+                val selectedNode = checkedTreeNode.userObject as Mavenize
+                val parent = findParent(checkedTreeNode)
+                val projectRootNode = ProjectToBuild(parent.displayName, parent.mavenArtifact, parent.projectDirectory.path, mutableListOf(selectedNode.mavenArtifact))
+
+                val settings = ExecutionSettings()
+                XmlSerializerUtil.copyBean(settingsService.currentSettings, settings)
+                checkedTreeNode.userObject as Mavenize
+                settings.projectsToBuild =  mutableListOf(projectRootNode)
+                val mavenRunner = MavenRunner(settings, project)
+                mavenRunner.run()
+
+                popup.cancel()
+            }
+
+            fun findParent(node: CheckedTreeNode): ProjectRootNode {
+                if (node.userObject is ProjectRootNode) {
+                    return node.userObject as ProjectRootNode
+                }
+                return findParent(node.parent as CheckedTreeNode)
+            }
+        })
 
         val selectOthersButton = JButton(message("mavenExecutor.projectsTree.selectOthers"))
         selectOthersButton.addMouseListener(object : MouseAdapter() {
@@ -98,6 +131,7 @@ class MavenProjectsTreePanel(projectsHelper: MavenProjectsHelper, private val se
             }
         })
 
+        panel.add(buildThisButton)
         panel.add(selectOthersButton)
         panel.add(deselectOthersButton)
 

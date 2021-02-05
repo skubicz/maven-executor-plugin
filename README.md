@@ -37,6 +37,7 @@ It is an alternative for the standard Maven Project Tool Window.
 ### Tree of Projects
 * Tree of checkbox representing structure of maven projects. Each node is maven module. If all nodes are selected, project is built normally.
 When only some nodes are selected, project is built with *--projects* option. In both cases, order of building modules is calculated by Maven Reactor.
+* **Build This Now** - actions visible after pressing right mouse button. Build immediately hovered module with current settings.
 * **Select/Deselect Others** - actions visible after pressing right mouse button.
 
 ### Favorite List

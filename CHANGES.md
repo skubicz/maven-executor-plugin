@@ -1,5 +1,8 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 2.1.0
+* Add Build This Now button to Projects Tree menu
+
 ### Version 2.0.0
 * New Goals component with expandable panel
 * New Profile component with floating panel

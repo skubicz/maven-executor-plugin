@@ -34,7 +34,7 @@ class MavenExecutorToolWindow(private var project: Project) {
 
     private val lastModifiedFilesService = LastModifiedFilesService.getInstance(project)
 
-    private val projectsTreePanel = MavenProjectsTreePanel(projectsHelper, settingsService)
+    private val projectsTreePanel = MavenProjectsTreePanel(project, projectsHelper, settingsService)
 
     private val projectSelectionPanel = ProjectSelectionPanel(project, settingsService, projectsHelper, projectsTreePanel, this::updateAllWithoutProjectSelection)
 

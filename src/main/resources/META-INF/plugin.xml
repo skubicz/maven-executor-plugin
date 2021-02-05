@@ -27,10 +27,10 @@ It is an alternative for the standard Maven Project Tool Window.
 <b>Main Configuration</b>
 <ul>
 <li>Goals - maven goals to execute.</li>
-<li>More Parameters** - parameters which will be added to result command.</li>
-<li>Offline - enable/disable maven *--offline* flag.</li>
-<li>Update Snapshots - enable/disable *--update-snapshots* flag.</li>
-<li>Threads - number of thread to run parallel, *-T* option (currently not supported *"thread per cpu"*).</li>
+<li>More Parameters - parameters which will be added to result command.</li>
+<li>Offline - enable/disable maven --offline flag.</li>
+<li>Update Snapshots - enable/disable --update-snapshots flag.</li>
+<li>Threads - number of thread to run parallel, -T option (currently not supported "thread per cpu").</li>
 <li>Profiles - list of Maven profiles.</li>
 <li>Jvm Options - optional JVM Options, when checkbox is selected, parameters are added to main JVM parameters (from dialog window).</li>
 <li>Projects ComboBox - list of Maven Project, allows narrowing visible project in Tree of Projects.</li>
@@ -41,8 +41,9 @@ It is an alternative for the standard Maven Project Tool Window.
 <b>Tree of Projects</b>
 <ul>
 <li>Tree of checkbox representing structure of maven projects. Each node is maven module. If all nodes are selected, project is built normally.
-When only some nodes are selected, project is built with *--projects* option. In both cases, order of building modules is calculated by Maven Reactor.</li>
-<li>Select/Deselect Others** - actions visible after pressing right mouse button.</li>
+When only some nodes are selected, project is built with --projects option. In both cases, order of building modules is calculated by Maven Reactor.</li>
+<li>Build This Now - actions visible after pressing right mouse button. Build immediately hovered module with current settings.</li>
+<li>Select/Deselect Others - actions visible after pressing right mouse button.</li>
 </ul>
 
 <b>Favorite List</b>
@@ -54,7 +55,7 @@ When only some nodes are selected, project is built with *--projects* option. In
 
 <b>Selection Buttons</b>
 <ul>
-<li>Open** - selects modules by current open files (open, not selected and visible in editor Tab).</li>
+<li>Open - selects modules by current open files (open, not selected and visible in editor Tab).</li>
 <li>Modified - selects module by modified files since last build (list of modified files is cleared after each build).</li>
 </ul>
 
@@ -65,8 +66,10 @@ When only some nodes are selected, project is built with *--projects* option. In
 <li>Always add a parent POMs modules to build - when module is selected in the tree, parent POMs module will be added to build, even if not all the leaves are selected.</li>
 </ul>
     ]]></description>
-
   <change-notes><![CDATA[
+    <br>Version 2.1.0
+    <br>* Add Build This Now button to Projects Tree menu
+    <br>
     <br>Version 2.0.0
     <br>* New Goals component with expandable panel
     <br>* New Profile component with floating panel
