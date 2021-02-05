@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "org.kubicz.mavenexecutor"
-version = "2.1.0"
+version = "2.1.1-SNAPSHOT"
 
 buildscript {
     repositories { mavenCentral() }
