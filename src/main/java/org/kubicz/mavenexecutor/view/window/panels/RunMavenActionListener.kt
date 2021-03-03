@@ -78,7 +78,7 @@ class RunMavenActionListener(private val project: Project) : ActionListener {
     }
 
     private fun mavenGeneralSettings(setting: ExecutionSettings): MavenGeneralSettings {
-        val mavenGeneralSettings = MavenGeneralSettings()
+        val mavenGeneralSettings = MavenProjectsManager.getInstance(project).generalSettings
 
         mavenGeneralSettings.isWorkOffline = setting.isOfflineMode
         mavenGeneralSettings.isAlwaysUpdateSnapshots = setting.isAlwaysUpdateSnapshot
@@ -87,10 +87,6 @@ class RunMavenActionListener(private val project: Project) : ActionListener {
                 mavenGeneralSettings.threads = it.toString()
             }
         }
-
-        val projectsManager = MavenProjectsManager.getInstance(project)
-        val mavenHome = MavenUtil.resolveMavenHomeDirectory(projectsManager.generalSettings.mavenHome)
-        mavenGeneralSettings.mavenHome = mavenHome!!.path // TODO co z !!
 
         return mavenGeneralSettings
 

@@ -161,7 +161,7 @@ class MavenExecutorRunConfigurationType internal constructor() : ConfigurationTy
         fun createRunnerAndConfigurationSettings(generalSettings: MavenGeneralSettings?,
                                                  runnerSettings: MavenRunnerSettings?, params: MavenRunnerParameters, project: Project): RunnerAndConfigurationSettings {
             val settings = RunManager.getInstance(project)
-                    .createRunConfiguration(generateName(project, params), ConfigurationTypeUtil
+                    .createConfiguration(generateName(project, params), ConfigurationTypeUtil
                             .findConfigurationType(MavenExecutorRunConfigurationType::class.java).myFactory)
             val runConfiguration = settings.configuration as MavenExecutorRunConfiguration
             runConfiguration.runnerParameters = params
