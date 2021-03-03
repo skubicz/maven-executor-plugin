@@ -77,7 +77,7 @@ When only some nodes are selected, project is build with --projects option. In b
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="192"/>
+  <idea-version since-build="192" until-build="202.*"/>
 
   <depends>org.jetbrains.idea.maven</depends>
   <depends>com.intellij.modules.java</depends>
