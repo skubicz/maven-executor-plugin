@@ -17,7 +17,7 @@ class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingList
 
     private var panel = JPanel()
 
-    private val settingsService = settingsService;
+    private val settingsService = settingsService
 
     private var changeModeButton = CustomButton("")
 
@@ -117,7 +117,11 @@ class FavoritePanel(settingsService: ExecutionSettingsService, changeSettingList
         panel.add(favoriteLabel)
 
         settingsService.favoriteSettingsNames.forEach { settingName ->
-            val button = CustomButton(fullOrSmall(settingName, settingName[0].toString()))
+            var smallName = ""
+            if(settingName.isNotEmpty()) {
+                smallName = settingName[0].toString()
+            }
+            val button = CustomButton(fullOrSmall(settingName, smallName))
             button.name = settingName
 
             button.init(settingName == currentSettingsLabel)
