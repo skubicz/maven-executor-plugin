@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>org.kubicz.mavenexecutor.plugin.id</id>
   <name>Maven Executor</name>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <vendor>Szymon Kubicz</vendor>
 
   <description><![CDATA[
@@ -51,6 +51,10 @@ When only some nodes are selected, project is build with --projects option. In b
     ]]></description>
 
   <change-notes><![CDATA[
+    <br>Version 1.0.7
+    <br>* GH-1: Cann't recongnize the settings file of maven
+    <br>* GH-2: There is a error，version:1.0.6 [empty label issue]
+    <br>
     <br>Version 1.0.6
     <br>* Remove deprecated usages
     <br>

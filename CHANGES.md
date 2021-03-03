@@ -1,5 +1,9 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 1.0.7
+* GH-1: Cann't recongnize the settings file of maven
+* GH-2: There is a error，version:1.0.6 [empty label issue]
+
 ### Version 1.0.6
 * Remove deprecated usages
 
