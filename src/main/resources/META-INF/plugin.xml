@@ -67,6 +67,11 @@ When only some nodes are selected, project is built with --projects option. In b
 </ul>
     ]]></description>
   <change-notes><![CDATA[
+    <br>Version 2.1.1
+    <br>* Fixed - NullPointerException while starting.
+    <br>* GH-2: There is a error [empty label issue]
+    <br>* GH-1: Cann't recongnize the settings file of maven
+    <br>
     <br>Version 2.1.0
     <br>* Add Build This Now button to Projects Tree menu
     <br>

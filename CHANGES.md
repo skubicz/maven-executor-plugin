@@ -1,5 +1,10 @@
 # Maven Executor IntelliJ Plugin Releases
 
+### Version 2.1.1
+* Fixed - NullPointerException while starting.
+* GH-2: There is a error [empty label issue]
+* GH-1: Cann't recongnize the settings file of maven
+    
 ### Version 2.1.0
 * Add Build This Now button to Projects Tree menu
 
