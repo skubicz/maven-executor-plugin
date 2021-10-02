@@ -5,18 +5,17 @@ version = "2.1.1-SNAPSHOT"
 
 buildscript {
     repositories { mavenCentral() }
-    dependencies { classpath(kotlin("gradle-plugin", "1.2.30")) }
 }
 
 plugins {
     id("org.jetbrains.intellij") version "0.6.5"
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.5.31"
 }
 
 intellij {
     updateSinceUntilBuild = false
     instrumentCode = true
-    version = "2020.3.1"
+    version = "2021.2"
 
     setPlugins("java", "maven")
 }
@@ -28,15 +27,15 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
-        languageVersion = "1.4"
-        apiVersion = "1.4"
+        jvmTarget = "11"
+        languageVersion = "1.5"
+        apiVersion = "1.5"
     }
 }
 dependencies {
@@ -44,9 +43,9 @@ dependencies {
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }

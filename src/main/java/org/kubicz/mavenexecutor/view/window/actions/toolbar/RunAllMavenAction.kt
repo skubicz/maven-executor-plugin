@@ -27,7 +27,7 @@ class RunAllMavenAction : AnAction("") {
 
 
     override fun update(event: AnActionEvent) {
-        val project = event.project!!
+        val project = event.project ?: return
         val presentation = event.presentation
         val settings = ExecutionSettingsService.getInstance(project)
 
